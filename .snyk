@@ -1,0 +1,8 @@
+# Snyk policy file.
+#
+# There are no ignores here on purpose. If you add one during the lab, add the
+# reason and an expiry date with it - an ignore without a justification is
+# indistinguishable from one that was wrong.
+version: v1.25.0
+ignore: {}
+patch: {}

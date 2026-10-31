@@ -1,0 +1,37 @@
+# CR1 analysis services. The application itself is built and run on VM1;
+# these containers provide the two analysers.
+#
+#   docker compose up -d sonarqube
+#   docker compose run --rm valgrind
+#
+# Note the image tags below. Two of them are mutable, which is a finding in its
+# own right - see VULNERABILITY_MAP.md, section A03.
+services:
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: cadmus-sonarqube
+    ports:
+      - "127.0.0.1:9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+  # Runs the application under Memcheck against the request corpus.
+  valgrind:
+    image: ubuntu:latest
+    container_name: cadmus-valgrind
+    working_dir: /work
+    volumes:
+      - .:/work
+    command: >
+      bash -lc "apt-get update -qq && apt-get install -y -qq g++ make valgrind curl >/dev/null &&
+                ./tools/scan-valgrind.sh"
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:

@@ -1,0 +1,8 @@
+{
+  "name": "cadmus-vulnshop-cpp-cr",
+  "version-string": "1.0.0",
+  "description": "CADMUS CR1 training target. Deliberately vulnerable.",
+  "dependencies": [
+    "fmt"
+  ]
+}
